@@ -30,9 +30,43 @@ FROM customers C
 	INNER JOIN orders O ON C.CustomerID = O.CustomerID
     INNER JOIN orderdetails OD ON O.OrderID = OD.orderID
     INNER JOIN products P ON OD.ProductID = P.ProductID
-GROUP BY FullName, ProductName
+GROUP BY FullName, ProductName;
+
+SELECT P.ProductID, P.ProductName, SUM(OD.FinalTotal) AS TotalAmount
+FROM products P
+INNER JOIN orderdetails OD ON P.ProductID = OD.ProductID
+GROUP BY P.ProductID, P.ProductName;
+
+SELECT P.ProductID, P.ProductName, Coalesce(SUM(O.Quantity),0) AS TotalQuantity
+FROM products P
+LEFT JOIN orderdetails O
+ON P.ProductID = O.ProductID
+GROUP BY P.ProductID, P.ProductName
+ORDER BY TotalQuantity DESC;
 
 
+# Instead of "ON", one can use "USING" Keyword, if the common column name is same in both the tables
+SELECT P.ProductID, P.ProductName, Coalesce(SUM(O.Quantity),0) AS TotalQuantity
+FROM products P
+LEFT JOIN orderdetails O
+USING (ProductID)
+GROUP BY P.ProductID, P.ProductName
+ORDER BY TotalQuantity DESC;
+
+# self join
+SELECT A.ProductName, B.ProductName, A.Price
+FROM products A
+JOIN products B
+ON A.ProductID <> B.ProductID AND A.Price = B.Price;
+
+
+SELECT LEFT("Lavkush", 3);
+
+SELECT A.ProductName, B.ProductName
+FROM products A
+INNER JOIN products B
+ON A.ProductID <> B.ProductID AND LEFT(A.ProductName, 5) = LEFT(B.ProductName, 5)
+ORDER BY A.ProductName, B.ProductName;
 
 
 
