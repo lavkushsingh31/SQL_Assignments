@@ -68,6 +68,20 @@ INNER JOIN products B
 ON A.ProductID <> B.ProductID AND LEFT(A.ProductName, 5) = LEFT(B.ProductName, 5)
 ORDER BY A.ProductName, B.ProductName;
 
+SELECT CONCAT(C1.FirstName, " ", C1.LastName) as Customer1, CONCAT(C2.FirstName, " ", C2.LastName) as Customer2, C1.City
+FROM customers C1
+INNER JOIN customers C2
+ON C1.CustomerID <> C2.CustomerID AND C1.City = C2.City;
 
+# Cross Join
 
+SELECT CONCAT(C.FirstName, " ", C.LastName) as CustomerName, P.ProductName
+FROM customers C
+CROSS JOIN products P;
+
+# Natural Join
+
+SELECT *
+FROM orders
+NATURAL JOIN orderdetails;
 
