@@ -131,3 +131,88 @@ DESC cust_data;
 ALTER TABLE cust_data
 DROP FingerprintID, DROP NationalID;
 DESC cust_data;
+
+# Modifying the datatype
+DESC cust_data;
+ALTER TABLE cust_data
+MODIFY column contact_number INT;
+DESC cust_data;
+
+
+# Modifying the contraint
+DESC cust_data;
+ALTER TABLE cust_data
+MODIFY column contact_number INT NOT NULL;
+DESC cust_data;
+
+SELECT * FROM cust_data;
+# Modifying the multiple cols at once
+DESC cust_data;
+ALTER TABLE cust_data
+MODIFY column first_name varchar(50),
+MODIFY column last_name varchar(50);
+DESC cust_data;
+
+DESC quantum_tutors.courses;
+ALTER TABLE quantum_tutors.courses
+MODIFY instructor_id int NOT NULL;
+DESC quantum_tutors.courses;
+
+DESC quantum_tutors.courses;
+ALTER TABLE quantum_tutors.courses
+MODIFY category VARCHAR(500),
+MODIFY title VARCHAR(500);
+DESC quantum_tutors.courses;
+
+# Drop query
+# DROP DATABASE databasename
+# DROP TABLE tablename
+
+CREATE DATABASE db_drop;
+DROP DATABASE db_drop;
+DROP TABLE test2;
+
+CREATE DATABASE IF NOT EXISTS dropdb;
+DROP DATABASE IF EXISTS dropdb;
+DROP TABLE IF EXISTS test2;
+
+# TRUNCATE - if you want to remove records but the table
+TRUNCATE TABLE customers_copy_data;
+
+TRUNCATE TABLE quantum_tutors.payments;
+
+# Dropping table with foreign key constrains
+/* ALTER TABLE related_table_name
+DROP FOREIGN KEY foreignkey_namel;
+*/
+
+# or 
+
+/*
+SET FOREIGN_KEY_CHECKS = 0;
+
+TRUNCATE TABLE table_name;
+
+SET FOREIGN_KEY_CHECKS = 1;
+*/
+
+
+DROP TABLE quantum_tutors.instructors;
+/*
+Error Code: 3730. Cannot drop table 'instructors' referenced by a foreign key constraint 
+'courses_ibfk_1' on table 'courses'.
+*/
+
+ALTER TABLE quantum_tutors.courses
+DROP FOREIGN KEY courses_ibfk_1;
+DROP TABLE quantum_tutors.instructors;
+
+# or you can get the constraint names using the below command
+SELECT CONSTRAINT_NAME 
+FROM information_schema.KEY_COLUMN_USAGE 
+WHERE TABLE_SCHEMA = 'DBNAME' 
+AND TABLE_NAME = 'TABLENAME' 
+AND REFERENCED_TABLE_NAME = 'TABLENAMETODELETE';
+
+# Rename TABLE 
+RENAME TABLE cust_data TO customer_data_renamed;
