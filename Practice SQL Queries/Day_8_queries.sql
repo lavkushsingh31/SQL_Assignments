@@ -122,3 +122,58 @@ SET price = price * 1.10
 WHERE course_id = 1;
 SELECT * FROM courses;
 
+/* Update multiple feilds
+UPDATE tablename
+SET col1 = val1, col2 = val2
+WHERE condition; */
+
+
+UPDATE courses
+SET price = price * 1.90, description = CONCAT(description, " Cirricculum Updated")
+WHERE course_id IN (
+	SELECT course_id FROM (
+		select * from courses WHERE category = 'Physics'
+	) tmptbl
+);
+
+
+SELECT * FROM customers;
+UPDATE customers
+SET city = "San Francisco", state = "California"
+WHERE customer_id = (
+select customer_id from (
+		select * from customers where first_name = 'John' AND last_name = 'Doe'
+) tmptbl
+);
+
+
+# 10 percent discount on Physics and Chemistry courses over 120 dollers
+
+SELECT * FROM courses;
+UPDATE courses
+SET price = price - (price*0.1)
+WHERE course_id IN (
+	SELECT course_id FROM (
+		SELECT * FROM courses WHERE category in ('Chemistry', 'Physics') AND price > 100
+    ) tmptabl
+);
+
+
+SELECT * FROM courses 
+WHERE category ='Physics' AND price > 100;
+UPDATE courses
+SET price = price - (price*0.2)
+WHERE course_id IN (
+	SELECT course_id FROM (
+		SELECT * FROM courses WHERE category ='Physics' AND price > 100
+    ) tmptabl
+);
+
+
+# DELETE FROM table
+# WHERE condition;
+
+SELECT * FROM newdatabase.customers;
+DELETE FROM newdatabase.customers WHERE address = 'Jabalpur';
+
+DELETE FROM 
