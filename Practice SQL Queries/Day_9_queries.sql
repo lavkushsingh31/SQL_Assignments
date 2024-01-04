@@ -122,3 +122,31 @@ FROM instructors I
 WHERE 4 >= ALL(
 	SELECT rating FROM reviews R 
 );
+
+
+SELECT C.instructor_id, 
+		(SELECT CONCAT(first_name , " ",last_name)
+        FROM instructors I 
+        WHERE C.instructor_id = I.instructor_id) as Instructor_Name, 
+        AVG(R.rating) as Average_Rating
+FROM courses C
+INNER JOIN reviews R USING (course_id)
+GROUP BY instructor_id
+HAVING Average_Rating > 3.5;
+
+DELETE FROM courses
+WHERE course_id NOT IN (
+	SELECT DISTINCT course_id FROM (
+		SELECT * FROM enrollments 
+    ) tmptbl 
+);
+
+SELECT * FROM enrollments;
+
+DELETE FROM reviews
+WHERE course_id NOT IN (
+	SELECT course_id FROM (
+		SELECT * FROM courses
+    ) tmptbl
+);
+
